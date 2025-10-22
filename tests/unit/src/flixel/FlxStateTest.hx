@@ -16,6 +16,15 @@ class FlxStateTest extends FlxTest
 	@Ignore // TODO: investigate
 	function testSwitchState()
 	{
+		final state = new FlxState();
+		
+		Assert.areNotEqual(state, FlxG.state);
+		switchState(state);
+		Assert.areEqual(state, FlxG.state);
+		
+		// Make sure this compiles
+		switchState(FlxState.new);
+		
 		var nextState:FlxState = null;
 		function createState()
 		{
@@ -28,20 +37,19 @@ class FlxStateTest extends FlxTest
 	}
 
 	@Test
-	@:haxe.warning("-WDeprecated")
-	function testResetStateLegacy()
+	function testResetStateInstance()
 	{
-		switchState(TestState.new);
-		var state = FlxG.state;
+		var state = new TestState();
+		switchState(state);
 		Assert.areEqual(state, FlxG.state);
 
 		resetState();
 		Assert.areNotEqual(state, FlxG.state);
-		Assert.isTrue(FlxG.state is TestState);
+		Assert.isTrue((FlxG.state is TestState));
 	}
 
 	@Test
-	function testResetState()
+	function testResetStateFunction()
 	{
 		var nextState:TestState = null;
 		function createState()
@@ -60,10 +68,27 @@ class FlxStateTest extends FlxTest
 	}
 	
 	@Test // #1676
-	function testCancelStateSwitch()
+	function testCancelStateSwitchInstance()
+	{
+		var finalState = new FinalStateLegacy();
+		switchState(finalState);
+		Assert.areEqual(finalState, FlxG.state);
+
+		switchState(new FlxState());
+		Assert.areEqual(finalState, FlxG.state);
+
+		resetState();
+		Assert.areEqual(finalState, FlxG.state);
+	}
+	
+	@Test // #1676
+	function testCancelStateSwitchFunction()
 	{
 		switchState(FinalState.new);
 		final finalState = FlxG.state;
+
+		switchState(new FlxState());
+		Assert.areEqual(finalState, FlxG.state);
 
 		switchState(FlxState.new);
 		Assert.areEqual(finalState, FlxG.state);
@@ -75,15 +100,27 @@ class FlxStateTest extends FlxTest
 	@Test
 	function testOutro()
 	{
-		FlxG.switchState(OutroState.new);
-		step();
-		Assert.isType(FlxG.state, OutroState);
+		var outroState = new OutroState();
 		
-		FlxG.switchState(FlxState.new);
+		FlxG.switchState(outroState);
 		step();
-		Assert.isType(FlxG.state, OutroState);
+		Assert.areEqual(outroState, FlxG.state);
+		
+		FlxG.switchState(new FlxState());
 		step();
-		Assert.isNotType(FlxG.state, OutroState);
+		Assert.areEqual(outroState, FlxG.state);
+		step();
+		Assert.areNotEqual(outroState, FlxG.state);
+		
+	}
+}
+
+class FinalStateLegacy extends FlxState
+{
+	/* prevents state switches */
+	override function switchTo(state)
+	{
+		return false;
 	}
 }
 

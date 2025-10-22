@@ -42,7 +42,6 @@ class FlxPathTest extends FlxTest
 	}
 
 	@Test
-	@:haxe.warning("-WDeprecated")
 	function testCancelNoCallback()
 	{
 		startPath();

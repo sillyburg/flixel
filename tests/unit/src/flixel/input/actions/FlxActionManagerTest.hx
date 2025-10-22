@@ -418,8 +418,7 @@ class FlxActionManagerTest extends FlxTest
 
 		t.destroy();
 	}
-	
-	#if hl @Ignore("makeFakeGamepad is failing on Hashlink #3140") #end
+
 	@Test
 	function testDeviceConnectedDisconnected()
 	{
@@ -981,7 +980,7 @@ class FlxActionManagerTest extends FlxTest
 		if (FlxG.mouse == null)
 			return;
 		step();
-		FlxG.mouse.setRawPositionUnsafe(X, Y);
+		FlxG.mouse.setGlobalScreenPositionUnsafe(X, Y);
 		@:privateAccess manager.update();
 	}
 

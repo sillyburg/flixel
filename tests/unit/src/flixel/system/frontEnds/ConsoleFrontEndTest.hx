@@ -1,16 +1,16 @@
 package flixel.system.frontEnds;
 
+import haxe.Exception;
+import haxe.PosInfos;
 import flixel.FlxG;
 import flixel.math.FlxPoint;
 import flixel.system.debug.console.ConsoleUtil;
-import haxe.Exception;
-import haxe.PosInfos;
 import massive.munit.Assert;
 
 class ConsoleFrontEndTest
 {
 	@Test
-	#if (!debug || hl) @Ignore #end // Fails on HL: https://github.com/HaxeFoundation/hashlink/issues/769
+	#if !debug @Ignore #end
 	function testEnum()
 	{
 		FlxG.console.registerEnum(TestEnum);
@@ -36,13 +36,12 @@ class ConsoleFrontEndTest
 		var func = ()->"success";
 		FlxG.console.registerFunction("func", func);
 		assertCommandSucceedsWith("func()", "success");
-		// assertCommandSucceedsWith("func", "success");// TODO: no (), should work, doesn't
 		FlxG.console.removeByAlias("func");
 		assertCommandFails("func()");
 		
 		//test again with removeFunction
 		FlxG.console.registerFunction("func", func);
-		assertCommandSucceedsWith("func()", "success");
+		assertCommandSucceedsWith("func", "success");// omit (), should still work
 		FlxG.console.removeFunction(func);
 		assertCommandFails("func()");
 	}
@@ -60,11 +59,7 @@ class ConsoleFrontEndTest
 		//test again with removeFunction
 		FlxG.console.registerObject("p", p);
 		assertCommandSucceedsWith("p.set(0, 0)", p);
-		FlxG.console.removeByAlias("p");
-		assertCommandFails("p.set(50, 100)");
-		FlxG.console.registerObject("p", p);
-		assertCommandSucceedsWith("p.set(0, 0)", p);
-		FlxG.console.removeObject(p);
+		FlxG.console.removeObject("p");
 		assertCommandFails("p.set(50, 100)");
 	}
 	

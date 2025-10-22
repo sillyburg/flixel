@@ -427,8 +427,7 @@ class FlxActionInputDigitalTest extends FlxTest
 		gamepad.update();
 	}
 	#end
-	
-	#if hl @Ignore("makeFakeGamepad is failing on Hashlink #3140") #end
+
 	@Test
 	function testFlxGamepad()
 	{
@@ -455,8 +454,7 @@ class FlxActionInputDigitalTest extends FlxTest
 			t.assertTrue(btn + ".release2.value");
 		}
 	}
-	
-	#if hl @Ignore("makeFakeGamepad is failing on Hashlink #3140") #end
+
 	@Test
 	function testFlxGamepadAny()
 	{
@@ -480,8 +478,7 @@ class FlxActionInputDigitalTest extends FlxTest
 			t.assertTrue(btn + ".any.release2.value");
 		}
 	}
-	
-	#if hl @Ignore("makeFakeGamepad is failing on Hashlink #3140") #end
+
 	@Test
 	function testFlxGamepadCallbacks()
 	{
@@ -513,8 +510,7 @@ class FlxActionInputDigitalTest extends FlxTest
 			}
 		}
 	}
-	
-	#if hl @Ignore("makeFakeGamepad is failing on Hashlink #3140") #end
+
 	@Test
 	function testFlxGamepadAnyCallbacks()
 	{
