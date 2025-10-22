@@ -350,6 +350,12 @@ class FlxCamera extends FlxBasic
 	public var antialiasing(default, set):Bool = false;
 
 	/**
+	 * Whether shakes, flashes, fades and etc update.
+	 */
+
+	public var paused:Bool = false;
+
+	/**
 	 * Used to force the camera to look ahead of the target.
 	 */
 	public var followLead(default, null):FlxPoint = FlxPoint.get();
@@ -1119,11 +1125,17 @@ class FlxCamera extends FlxBasic
 		}
 
 		updateScroll();
-		updateFlash(elapsed);
-		updateFade(elapsed);
+		
+		if (!paused)
+		{
+			updateFlash(elapsed);
+			updateFade(elapsed);
+		}
 
 		updateFlashSpritePosition();
-		updateShake(elapsed);
+
+		if (!paused)
+			updateShake(elapsed);
 	}
 
 	/**
